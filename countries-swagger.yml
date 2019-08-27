@@ -1,0 +1,86 @@
+swagger: "2.0"
+info:
+  description: "This application is used to manage countries information."
+  version: "1.0.0"
+  title: "Countries Swagger"
+host: "localhost:7002"
+basePath: "/v1"
+tags:
+- name: "retrieve-countries-by-continent"
+  description: "Retrieves all continent countries"
+schemes:
+- "http"
+paths:
+  /countries/continent/{continent}:
+    get:
+      tags:
+      - "retrieve-countries-by-continent"
+      summary: "update customer channel"
+      operationId: "UpdateCustomerChannel"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "continent"
+        description: "continent name [america, europe, africa, asia]"
+        required: true
+        type: "string"
+      - in: "header"
+        name: "uuid"
+        description: "Client UniqueID that made the request"
+        required: true
+        type: "string"
+      - in: "header"
+        name: "Accept"
+        description: "Accept header for response (application/json)"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successfull operation"
+          schema:
+            $ref: "#/definitions/continentResponse"
+        400: 
+          description: "BadRequest"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+definitions:
+  ErrorResponse:
+    type: "object"
+    properties:
+      code:
+        description: Error code identifier [ERROR, INVALID, FATAL].
+        type: "string"
+      details:
+        description: Human readable descriptive error message.
+        type: "string"
+      location:
+        description: Possible root cause for the error.
+        type: "string"
+      uuid:
+        description: UUID that identifies the client that made the request.
+        type: "string"
+    required:
+      - code
+      - details
+      - location
+      - uuid
+  continentResponse:
+    type: "object"
+    properties:  
+      continentName:
+        type: "string"
+      countriesCount:
+        type: "number"
+      countriesList:
+        type: "array"
+        items:
+          $ref: '#/definitions/country'
+  country:
+    type: "object"
+    properties:
+      countryId:
+        type: "string"
+      countryName:
+        type: "string"
+ 
