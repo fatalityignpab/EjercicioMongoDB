@@ -1,9 +1,10 @@
 ## Ejercicio de una API alimentada con MongoDB 🚀
 
 Se realizó los siguientes cambios: 😎
-1. Cambiar en el Controlador y el servicio la palabra [Country a CountryDocument](#country-a-countrydocument)
-2. Para el TomCat configuré el puerto a 8082
-3. En el modelo, agregue las [columnas](#columnas) de la BD de MongoDB para que reconozca hacia donde debe de llenar
+1. Para leer los datos del MongoDB sin usar los datos en Java, cambie en el Controlador y el Servicio la palabra [Country a CountryDocument](#country-a-countrydocument)
+    - Como detalle, le implementé los errores ya construidos en caso que el usuario no escriba correctamente la ID y el Nombre del continente.
+3. Para el TomCat configuré el puerto a 8082
+4. En el modelo, agregue las [columnas](#columnas) de la BD de MongoDB para que reconozca hacia donde debe de llenar
 
 ---
 
@@ -12,16 +13,42 @@ Se realizó los siguientes cambios: 😎
 ---
 
 ## Country a CountryDocument
+**CountriesController.java**
 ```java
-	// Instanceamos las variables por los nombres de los campos que mongoDB tiene
-	@Field("name")
-	String name;
+      // Se cambió de Country a CountryDocument
+      @GetMapping(path = "/countries/continent/name/{continent}")
+      public ResponseEntity<List<CountryDocument>> findCountryByContinent(
+                  @PathVariable(name = "continent") String continentName) {
+            return new ResponseEntity<List<CountryDocument>>(
+                        countriesService.findCountriesByContinentName(continentName), HttpStatus.OK);
+      }
 
-	@Field("capital")
-	String capital;
-	
-	@Field("continent")
-	String continent;
+      // Se cambió de Country a CountryDocument
+      @GetMapping(path = "/countries/continent/id/{continent}")
+      public ResponseEntity<List<CountryDocument>> findCountryByContinent(
+                  @PathVariable(name = "continent") Integer continentId) {
+            return new ResponseEntity<List<CountryDocument>>(countriesService.findCountriesByContinentId(continentId),
+                        HttpStatus.OK);
+      }
+```
+**CountriesService.java**
+```java
+  // Se cambió de Country a CountriesMongoRepository
+  public List<CountryDocument> findCountriesByContinentName(String continentName) {
+    if (arregloContinentes.stream().anyMatch(val -> val.equals(continentName)))
+      return countriesRepository.findByContinent(String.valueOf(Continent.continentByName(continentName)));
+    else
+      throw new InvalidContinentException("Continent name: " + continentName + " does not exist.");
+  }
+
+  // Se cambió de Country a CountriesMongoRepository
+  public List<CountryDocument> findCountriesByContinentId(Integer continentId) {
+    // Se agregó la conversión de Continente a String
+    if (continentId >= 1 && continentId <= 5)
+      return countriesRepository.findByContinent(String.valueOf(Continent.continentById(continentId)));
+    else
+      throw new InvalidContinentException("Continent id: " + String.valueOf(continentId) + " does not exist.");
+  }
 ```
 
 ---

@@ -21,40 +21,43 @@ import java.util.Optional;
 @RequestMapping("api")
 public class CountriesController {
 
-   @Autowired
-   ICountriesService countriesService;
+      @Autowired
+      ICountriesService countriesService;
 
-   // Se cambió de Country a CountryDocument
-   @GetMapping(path = "/countries/continent/name/{continent}")
-   public ResponseEntity<List<CountryDocument>> findCountryByContinent(
-         @PathVariable(name = "continent") String continentName) {
-      return new ResponseEntity<List<CountryDocument>>(countriesService.findCountriesByContinentName(continentName),
-            HttpStatus.OK);
-   }
+      // Se cambió de Country a CountryDocument
+      @GetMapping(path = "/countries/continent/name/{continent}")
+      public ResponseEntity<List<CountryDocument>> findCountryByContinent(
+                  @PathVariable(name = "continent") String continentName) {
+            return new ResponseEntity<List<CountryDocument>>(
+                        countriesService.findCountriesByContinentName(continentName), HttpStatus.OK);
+      }
 
-   // Se cambió de Country a CountryDocument
-   @GetMapping(path = "/countries/continent/id/{continent}")
-   public ResponseEntity<List<CountryDocument>> findCountryByContinent(
-         @PathVariable(name = "continent") Integer continentId) {
-      return new ResponseEntity<List<CountryDocument>>(countriesService.findCountriesByContinentId(continentId),
-            HttpStatus.OK);
-   }
+      // Se cambió de Country a CountryDocument
+      @GetMapping(path = "/countries/continent/id/{continent}")
+      public ResponseEntity<List<CountryDocument>> findCountryByContinent(
+                  @PathVariable(name = "continent") Integer continentId) {
+            return new ResponseEntity<List<CountryDocument>>(countriesService.findCountriesByContinentId(continentId),
+                        HttpStatus.OK);
+      }
 
-   // Se agregó la variable de name como Nombre del País
-   @GetMapping(path = "/country/name/{name}")
-   public ResponseEntity<Optional<CountryDocument>> findCountryByName(
-         @PathVariable(name = "name") String countryName) {
-      // Se creó una condición si no encuentra el país (si encuentra, responde 200, sino, responde 500)
-      if (countriesService.findCountryByName(countryName).isPresent())
-         return new ResponseEntity<Optional<CountryDocument>>(countriesService.findCountryByName(countryName),
-               HttpStatus.OK);
-      else
-         throw new InvalidContinentException("Country name: " + countryName + " does not exist.");
-   }
+      // Se agregó la variable de name como Nombre del País
+      @GetMapping(path = "/country/name/{name}")
+      public ResponseEntity<Optional<CountryDocument>> findCountryByName(
+                  @PathVariable(name = "name") String countryName) {
+            // Se creó una condición si no encuentra el país (si encuentra, responde 200,
+            // sino, responde 500)
+            if (countriesService.findCountryByName(countryName).isPresent())
+                  return new ResponseEntity<Optional<CountryDocument>>(countriesService.findCountryByName(countryName),
+                              HttpStatus.OK);
+            else
+                  throw new InvalidContinentException("Country name: " + countryName + " does not exist.");
+      }
 
-   @PostMapping(path = "/country", consumes = "application/json", produces = "application/json")
-   public ResponseEntity<Optional<CountryDocument>> saveCountryByName(@RequestBody CountryDocument document) { // @RequestBody CountryDocument saveDocument
-      return new ResponseEntity<Optional<CountryDocument>>(countriesService.saveContinent(document),
-            HttpStatus.CREATED);
-   }
+      @PostMapping(path = "/country", consumes = "application/json", produces = "application/json")
+      public ResponseEntity<Optional<CountryDocument>> saveCountryByName(@RequestBody CountryDocument document) { // @RequestBody
+                                                                                                                  // CountryDocument
+                                                                                                                  // saveDocument
+            return new ResponseEntity<Optional<CountryDocument>>(countriesService.saveContinent(document),
+                        HttpStatus.CREATED);
+      }
 }

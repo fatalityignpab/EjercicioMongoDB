@@ -22,8 +22,6 @@ public class CountriesService implements ICountriesService {
 
   ArrayList<String> arregloContinentes = new ArrayList<>(
       Arrays.asList("africa", "europe", "asia", "north_america", "south_america"));
-  
-  
 
   @Autowired
   CountriesMongoRepository countriesRepository; // Se cambió de ICountriesRepository a CountriesMongoRepository
