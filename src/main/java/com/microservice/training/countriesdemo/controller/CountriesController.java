@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -45,12 +44,12 @@ public class CountriesController {
    @GetMapping(path = "/country/name/{name}")
    public ResponseEntity<Optional<CountryDocument>> findCountryByName(
          @PathVariable(name = "name") String countryName) {
-      // Se creó una ocndición si no encuentra el país (si encuentra, responde 200, sino, responde 500)
+      // Se creó una condición si no encuentra el país (si encuentra, responde 200, sino, responde 500)
       if (countriesService.findCountryByName(countryName).isPresent())
          return new ResponseEntity<Optional<CountryDocument>>(countriesService.findCountryByName(countryName),
                HttpStatus.OK);
       else
-         throw new InvalidContinentException("Continent id: " + countryName + " does not exist.");
+         throw new InvalidContinentException("Country name: " + countryName + " does not exist.");
    }
 
    @PostMapping(path = "/country", consumes = "application/json", produces = "application/json")
