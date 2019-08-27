@@ -71,4 +71,4 @@ Se realizó los siguientes cambios: 😎
 
 ***PRUEBAS***
 
-![Recordit GIF](http://g.recordit.co/iLN6A0vSD8.gif)
+![Continente por nombre](http://g.recordit.co/FPaMB6uznP.gif)
