@@ -71,4 +71,7 @@ Se realizó los siguientes cambios: 😎
 
 ***PRUEBAS***
 
+**Continente por nombre**
 ![Continente por nombre](http://g.recordit.co/FPaMB6uznP.gif)
+**Crear País**
+![Crear País](http://g.recordit.co/TI9IC95flL.gif)
