@@ -2,9 +2,11 @@
 
 Se realizó los siguientes cambios: 😎
 1. Para leer los datos del MongoDB sin usar los datos en Java en la parte de continente (nombre y id), cambie en el Controlador y el Servicio la palabra [Country a CountryDocument](#country-a-countrydocument)
-    - Como detalle, le implementé los errores ya construidos en caso que el usuario no escriba correctamente la ID y el Nombre del continente.
-3. Para el TomCat configuré el [puerto a 8082](#puerto)
-4. En el modelo, agregue las [columnas](#columnas) de la BD de MongoDB para que reconozca hacia donde debe de llenar
+    - Como detalle, le implementé los [errores](#manejo-de-errores) ya construidos en caso que el usuario no escriba correctamente la ID y el Nombre del continente.
+2. Para leer los datos de acuerdo al parametro *name*, en el Controlador y Servicio, se agregó el método de [buscar por nombre](#buscar-por-nombre).
+3. Para crear un documento de MongoDB, en el Controlador y Servicio, se agregó el método de [crear documento](#crear-documento), pero para que funcione, se probó en SoapUI para que cargue un JSON en el Body (*@Requestbody*).
+4. Para el TomCat configuré el [puerto a 8082](#puerto)
+5. En el modelo, agregue las [columnas](#columnas) de la BD de MongoDB para que reconozca hacia donde debe de llenar
 
 ---
 
@@ -31,8 +33,11 @@ Se realizó los siguientes cambios: 😎
                         HttpStatus.OK);
       }
 ```
+## Manejo de errores
 **CountriesService.java**
 ```java
+  ArrayList<String> arregloContinentes = new ArrayList<>(
+      Arrays.asList("africa", "europe", "asia", "north_america", "south_america"));
   // Se cambió de Country a CountriesMongoRepository
   public List<CountryDocument> findCountriesByContinentName(String continentName) {
     if (arregloContinentes.stream().anyMatch(val -> val.equals(continentName)))
@@ -48,6 +53,53 @@ Se realizó los siguientes cambios: 😎
       return countriesRepository.findByContinent(String.valueOf(Continent.continentById(continentId)));
     else
       throw new InvalidContinentException("Continent id: " + String.valueOf(continentId) + " does not exist.");
+  }
+```
+
+---
+
+## Buscar por nombre
+**CountriesController.java**
+```java
+      // Se agregó la variable de name como Nombre del País
+      @GetMapping(path = "/country/name/{name}")
+      public ResponseEntity<Optional<CountryDocument>> findCountryByName(
+                  @PathVariable(name = "name") String countryName) {
+            // Se creó una condición si no encuentra el país (si encuentra, responde 200,
+            // sino, responde 500)
+            if (countriesService.findCountryByName(countryName).isPresent())
+                  return new ResponseEntity<Optional<CountryDocument>>(countriesService.findCountryByName(countryName),
+                              HttpStatus.OK);
+            else
+                  throw new InvalidContinentException("Country name: " + countryName + " does not exist.");
+      }
+```
+**CountriesService.java**
+```java
+  @Override
+  public Optional<CountryDocument> findCountryByName(String countryName) {
+    return countriesRepository.findByName(countryName);
+  }
+```
+
+---
+
+## Crear documento
+**CountriesController.java**
+```java
+      @PostMapping(path = "/country", consumes = "application/json", produces = "application/json")
+      public ResponseEntity<Optional<CountryDocument>> saveCountryByName(@RequestBody CountryDocument document) {
+            return new ResponseEntity<Optional<CountryDocument>>(countriesService.saveContinent(document),
+                        HttpStatus.CREATED);
+      }
+```
+**CountriesService.java**
+```java
+  // Se probo con SoapUI alimentando a un JSON para pruebas
+  @Override
+  public Optional<CountryDocument> saveContinent(CountryDocument document) {
+    countriesRepository.save(document);
+    return countriesRepository.findById(document.getId());
   }
 ```
 
