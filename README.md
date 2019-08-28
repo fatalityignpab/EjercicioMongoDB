@@ -1,9 +1,9 @@
 ## Ejercicio de una API alimentada con MongoDB 🚀
 
 Se realizó los siguientes cambios: 😎
-1. Para leer los datos del MongoDB sin usar los datos en Java, cambie en el Controlador y el Servicio la palabra [Country a CountryDocument](#country-a-countrydocument)
+1. Para leer los datos del MongoDB sin usar los datos en Java en la parte de continente (nombre y id), cambie en el Controlador y el Servicio la palabra [Country a CountryDocument](#country-a-countrydocument)
     - Como detalle, le implementé los errores ya construidos en caso que el usuario no escriba correctamente la ID y el Nombre del continente.
-3. Para el TomCat configuré el puerto a 8082
+3. Para el TomCat configuré el [puerto a 8082](#puerto)
 4. En el modelo, agregue las [columnas](#columnas) de la BD de MongoDB para que reconozca hacia donde debe de llenar
 
 ---
@@ -65,6 +65,15 @@ Se realizó los siguientes cambios: 😎
 	
 	@Field("continent")
 	String continent;
+```
+
+---
+
+## Puerto
+**application.yml**
+```yml
+server:
+  port: 8082
 ```
 
 ---

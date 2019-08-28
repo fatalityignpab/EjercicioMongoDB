@@ -54,9 +54,7 @@ public class CountriesController {
       }
 
       @PostMapping(path = "/country", consumes = "application/json", produces = "application/json")
-      public ResponseEntity<Optional<CountryDocument>> saveCountryByName(@RequestBody CountryDocument document) { // @RequestBody
-                                                                                                                  // CountryDocument
-                                                                                                                  // saveDocument
+      public ResponseEntity<Optional<CountryDocument>> saveCountryByName(@RequestBody CountryDocument document) {
             return new ResponseEntity<Optional<CountryDocument>>(countriesService.saveContinent(document),
                         HttpStatus.CREATED);
       }
