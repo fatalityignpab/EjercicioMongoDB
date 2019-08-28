@@ -7,6 +7,7 @@ Se realizó los siguientes cambios: 😎
 3. Para crear un documento de MongoDB, en el Controlador y Servicio, se agregó el método de [crear documento](#crear-documento), pero para que funcione, se probó en SoapUI para que cargue un JSON en el Body (*@Requestbody*).
 4. Para el TomCat configuré el [puerto a 8082](#puerto)
 5. En el modelo, agregue las [columnas](#columnas) de la BD de MongoDB para que reconozca hacia donde debe de llenar
+6. Para ver cómo responde el GET y el POST, se creó las visualizaciones de cómo trabaja la [API](#pruebas).
 
 ---
 
@@ -130,7 +131,7 @@ server:
 
 ---
 
-***PRUEBAS***
+## Pruebas
 
 **Continente por nombre**
 ![Continente por nombre](http://g.recordit.co/FPaMB6uznP.gif)
